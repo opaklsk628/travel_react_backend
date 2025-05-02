@@ -1,0 +1,19 @@
+# 依賴
+node_modules/
+
+# 構建輸出
+dist/
+
+# 環境變數
+.env
+
+# 日誌
+logs
+*.log
+npm-debug.log*
+
+# 編輯器目錄和文件
+.idea/
+.vscode/
+*.swp
+*.swo
