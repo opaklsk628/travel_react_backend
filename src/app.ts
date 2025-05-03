@@ -2,35 +2,31 @@ import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
 import dotenv from 'dotenv';
+
 import authRoutes from './routes/authRoutes';
+import passwordResetRoutes from './routes/passwordResetRoutes';
+import adminRoutes from './routes/adminRoutes';
 
 dotenv.config();
-
 const app = express();
 
 app.use(cors());
 app.use(express.json());
 
 app.use('/api/auth', authRoutes);
+app.use('/api/auth/password-reset', passwordResetRoutes);
+app.use('/api/admin', adminRoutes);
 
-app.get('/', (req, res) => {
-  res.send('Wanderlust Travel API is running...');
-});
+app.get('/', (_req, res) => res.send('API is running'));
 
 const PORT = process.env.PORT || 5000;
-
-const startServer = async () => {
+(async () => {
   try {
     await mongoose.connect(process.env.MONGODB_URI as string);
     console.log('MongoDB connected');
-    
-    app.listen(PORT, () => {
-      console.log(`Server running on port ${PORT}`);
-    });
-  } catch (error) {
-    console.error('Server startup error:', error);
+    app.listen(PORT, () => console.log(`Server running on ${PORT}`));
+  } catch (err) {
+    console.error('Server startup error:', err);
     process.exit(1);
   }
-};
-
-startServer();
+})();
