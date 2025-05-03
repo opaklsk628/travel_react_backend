@@ -3,33 +3,49 @@ import crypto from 'crypto';
 import PasswordResetToken from '../models/PasswordResetToken';
 import User from '../models/User';
 
-// request reset password
-export const requestReset = async (req: Request, res: Response) => {
+export const requestReset = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   const { email } = req.body;
   const user = await User.findOne({ email });
-  if (!user) return res.json({ message: 'If email exists, you will receive link' });
+
+  if (!user) {
+    res.json({ message: 'If email exists, you will receive link' });
+    return;
+  }
 
   const token = crypto.randomBytes(32).toString('hex');
   await PasswordResetToken.create({
     userId: user._id,
     token,
-    expiresAt: new Date(Date.now() + 60 * 60 * 1000), // 1 hr
+    expiresAt: new Date(Date.now() + 60 * 60 * 1000), // 1h
   });
 
   res.json({ resetToken: token });
 };
 
-// send email with resetToken
-export const confirmReset = async (req: Request, res: Response) => {
+export const confirmReset = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   const { token, newPassword } = req.body;
+
   const record = await PasswordResetToken.findOne({
     token,
     expiresAt: { $gt: new Date() },
   });
-  if (!record) return res.status(400).json({ message: 'Invalid or expired token' });
+
+  if (!record) {
+    res.status(400).json({ message: 'Invalid or expired token' });
+    return;
+  }
 
   const user = await User.findById(record.userId);
-  if (!user) return res.status(400).json({ message: 'User not found' });
+  if (!user) {
+    res.status(400).json({ message: 'User not found' });
+    return;
+  }
 
   user.password = newPassword;
   await user.save();
