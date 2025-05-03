@@ -5,7 +5,7 @@ import User from '../models/User';
 
 const router = Router();
 
-// all login records
+// list all login records
 router.get('/login-records', protect, adminOnly, async (_req, res) => {
   const records = await LoginRecord
     .find()
