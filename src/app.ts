@@ -6,6 +6,7 @@ import dotenv from 'dotenv';
 import authRoutes from './routes/authRoutes';
 import passwordResetRoutes from './routes/passwordResetRoutes';
 import adminRoutes from './routes/adminRoutes';
+import hbRoutes    from './routes/hotelbedsRoutes';
 
 dotenv.config();
 
@@ -17,6 +18,7 @@ app.use(express.json());
 app.use('/api/auth', authRoutes);
 app.use('/api/auth/password-reset', passwordResetRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api/hb', hbRoutes);
 
 // check api health
 app.get('/', (_req: Request, res: Response, _next: NextFunction) => {
