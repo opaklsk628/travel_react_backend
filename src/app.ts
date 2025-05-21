@@ -7,6 +7,7 @@ import authRoutes from './routes/authRoutes';
 import passwordResetRoutes from './routes/passwordResetRoutes';
 import adminRoutes from './routes/adminRoutes';
 import amadeusRoutes from './routes/amadeusRoutes';
+import favoriteRoutes from './routes/favoriteRoutes';
 
 dotenv.config();
 
@@ -19,6 +20,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/auth/password-reset', passwordResetRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api', amadeusRoutes);
+app.use('/api', favoriteRoutes);
 
 // check api health
 app.get('/', (_req: Request, res: Response, _next: NextFunction) => {
