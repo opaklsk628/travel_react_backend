@@ -1,4 +1,3 @@
-// src/controllers/favoriteController.ts
 import { Request, Response } from 'express';
 import Favorite from '../models/Favorite';
 
